@@ -1,5 +1,5 @@
 # author: Group 5
-# date: March 13 2024 
+# date: March 28 2024 
 
 "This script generates scatterplot visualizations for the wine dataset.
 
@@ -13,31 +13,17 @@ Options:
 
 " -> doc
 
+# load the necessary libraries
 library(tidyverse)
 library(docopt)
 library(ggplot2)
 
+# call in the functions that we created for this script
+source("R/create_scatter.R")
+source("R/create_output_dir.R")
+
+# specify the variables
 opt <- docopt(doc)
 
-main <- function(scatter1, scatter2, input_dir, output_dir) {
-  # Create output_dir if it does not exist
-  if (!dir.exists(output_dir)) {
-    dir.create(output_dir)
-  }
-  
-  data <- read_csv(input_dir)
-  data$cultivar <- factor(data$cultivar)
-  
-  scatter <-
-    ggplot(data, aes( x = !!sym(scatter1), y = !!sym(scatter2),color = cultivar)) +
-    geom_point() +
-    labs(
-      title = paste("Scatter Plot of", scatter1, "vs", scatter2),
-      x = scatter1,
-      y = scatter2)  
-  
-  ggsave(file.path(output_dir, "scatterplot.png"), scatter, device = "png", width = 5, height = 3)
-  
-  
-}
-main(opt[["--scatter1"]], opt[["--scatter2"]], opt[["--input_dir"]], opt[["--output_dir"]])
+# run the final function on our variables
+create_output_dir(opt[["--scatter1"]], opt[["--scatter2"]], opt[["--input_dir"]], opt[["--output_dir"]])
